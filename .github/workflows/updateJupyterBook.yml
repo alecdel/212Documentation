@@ -16,5 +16,5 @@ jobs:
         run: pip install -U jupyter-book
 
       - name: Update JupyterBook
-        run: jupyter-book build --all warehouse-delivery-network/
+        run: jupyter-book build warehouse-delivery-network/
 
