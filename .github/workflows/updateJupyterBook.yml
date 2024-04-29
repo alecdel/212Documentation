@@ -1,0 +1,20 @@
+name: Build warehouse-delivery-network JupyterBook
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Install JupyterBook
+        run: pip install -U jupyter-book
+
+      - name: Build JupyterBook
+        run: jupyter-book build warehouse-delivery-network
+
