@@ -1,7 +1,7 @@
 # Book settings
 title: Warehouse Delivery Network
 author: Alec Dello Iacono
-logo: logo.png
+logo: van.png
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
