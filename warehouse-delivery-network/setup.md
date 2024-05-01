@@ -7,4 +7,4 @@
 - To run the compiled test program in your terminal: ./test graph_data.txt
 
 ### Here is a step by step of how to run the file
-![van.png](https://github.com/alecdel/212Documentation/blob/main/warehouse-delivery-network/code-example.png)
+![code-example.png](https://github.com/alecdel/212Documentation/blob/main/warehouse-delivery-network/code-example.png)
