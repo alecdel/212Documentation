@@ -38,9 +38,6 @@ jobs:
         path: "warehouse-delivery-network/_build/html"
 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.0
-      with:
-        branch: gh-pages
-        folder: warehouse-delivery-network/_build/html
-        token: ${{ secrets.GITHUB_TOKEN }}
+      id: deployment
+      uses: actions/deploy-pages@v2
 
