@@ -12,35 +12,35 @@ jobs:
       pages: write
       id-token: write
     steps:
-    - uses: actions/checkout@v4.1.4
+    - uses: actions/checkout@v4
 
-    - name: Set up Python 5.1
-      uses: actions/setup-python@v5.1.0
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
         pip install -U jupyter-book
 
     - name: Cache
-      uses: actions/cache@v4.0.2
+      uses: actions/cache@v4
       with:
         path: _build/.jupyter_cache
         key: ${{ runner.os }}-jupyter-book-cache-${{ hashFiles('requirements.txt') }}
-
 
     - name: Build the book
       run: |
         jupyter-book build --all warehouse-delivery-network
 
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v4.3.3
+      uses: actions/upload-artifact@v3
       with:
         path: "warehouse-delivery-network/_build/html"
 
     - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4.4.0
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         branch: gh-pages
         folder: warehouse-delivery-network/_build/html
         token: ${{ secrets.GITHUB_TOKEN }}
-
