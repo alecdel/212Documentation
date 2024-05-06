@@ -1,1 +1,5 @@
 warehouse-delivery-network/_build
+Doxyfile
+html/
+latex/
+

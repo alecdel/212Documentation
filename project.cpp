@@ -1,3 +1,8 @@
+/**
+ * @file project.cpp
+ * @brief The complete file that demonstrates using Treap, Kruskal's algorithm, and Comb sort.
+*/
+
 #include <iostream>   // For input and output operations.
 #include <fstream>    // For file input and output operations.
 #include <vector>     // Standard template library vector for dynamic array functionality.
