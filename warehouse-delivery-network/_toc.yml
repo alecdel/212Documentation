@@ -4,6 +4,6 @@
 format: jb-book
 root: intro
 chapters:
-- file: program
+- file: program-implementation
 - file: setup
 - file: references
