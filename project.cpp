@@ -8,24 +8,36 @@
 
 using namespace std;
 
-// Struct to represent an edge in a graph.
+/**
+* @brief Struct to represent an edge in a graph.
+*/
 struct Edge {
     int src, dest, weight;    // Source vertex, destination vertex, and weight of the edge.
     string packageCode;       // Custom identifier for the edge.
 };
 
-// Struct to represent a graph.
+/**
+* @brief Struct to represent a graph.
+*/
 struct Graph {
     int V, E;                 // V: Number of vertices, E: Number of edges.
     vector<Edge> edges;       // Vector to store edges.
 
-    // Function to add an edge to the graph.
-    void addEdge(int src, int dest, int weight, string packageCode) {
+        /**
+         * @brief Function to add an edge to the graph.
+         * @param src Source vertex of the edge.
+         * @param dest Destination vertex of the edge.
+         * @param weight Weight of the edge.
+         * @param packageCode Identifier for the edge.
+        */
+        void addEdge(int src, int dest, int weight, string packageCode) {
         edges.push_back({src, dest, weight, packageCode});  // Append new edge to the vector.
     }
 };
 
-// Struct for managing subsets for union-find.
+/**
+* @brief Struct for managing subsets for union-find.
+*/
 struct subset {
     int parent;   // Parent index of the element.
     int rank;     // Rank of the tree rooted at the element.
@@ -34,7 +46,12 @@ struct subset {
     subset() : parent(0), rank(0) {}
 };
 
-// Find function with path compression.
+/**
+* @brief Find function with path compression.
+* @param subsets Array of subsets.
+* @param i Index of the element.
+* @return Root of the set to which 'i' belongs.
+*/
 int find(subset subsets[], int i) {
     // Path compression heuristic.
     if (subsets[i].parent != i)
@@ -42,7 +59,13 @@ int find(subset subsets[], int i) {
     return subsets[i].parent;  // Return the root of the set to which 'i' belongs.
 }
 
-// Union by rank function.
+
+/**
+* @brief Union by rank function.
+* @param subsets Array of subsets.
+* @param x Index of element x.
+* @param y Index of element y.
+*/
 void Union(subset subsets[], int x, int y) {
     int xroot = find(subsets, x); // Find root of element x.
     int yroot = find(subsets, y); // Find root of element y.
@@ -57,7 +80,10 @@ void Union(subset subsets[], int x, int y) {
     }
 }
 
-// Comb sort algorithm to sort edges by weight.
+/**
+* @brief Comb sort algorithm to sort edges by weight.
+* @param edges Vector of edges to be sorted.
+*/
 void combSort(vector<Edge>& edges) {
     int size = edges.size();   // Number of edges.
     int gap = size;            // Initialize gap size.
@@ -77,17 +103,26 @@ void combSort(vector<Edge>& edges) {
     } while (gap != 1 || swapped); // Continue until no swaps are needed and gap is 1.
 }
 
-// Treap node structure for maintaining a balanced binary search tree.
+/**
+* @brief Treap node structure for maintaining a balanced binary search tree.
+*/
 struct TreapNode {
     Edge key;              // Key on which the treap is sorted.
     int priority;          // Random priority to ensure balance.
     TreapNode *left, *right; // Pointers to left and right children.
 
-    // Constructor initializes node with an edge and random priority.
+    /**
+     * @brief Constructor initializes node with an edge and random priority.
+     * @param key Edge key.
+    */    
     TreapNode(Edge key) : key(key), priority(rand()), left(nullptr), right(nullptr) {}
 };
 
-// Right rotation to maintain balanced structure.
+/**
+* @brief Right rotation to maintain balanced structure.
+* @param y Node to be rotated.
+* @return New root after rotation.
+*/
 TreapNode* rightRotate(TreapNode *y) {
     TreapNode *x = y->left, *T2 = x->right;
     x->right = y;          // x becomes new root.
@@ -95,7 +130,11 @@ TreapNode* rightRotate(TreapNode *y) {
     return x;              // Return new root.
 }
 
-// Left rotation to maintain balanced structure.
+/**
+* @brief Left rotation to maintain balanced structure.
+* @param x Node to be rotated.
+* @return New root after rotation.
+*/
 TreapNode* leftRotate(TreapNode *x) {
     TreapNode *y = x->right, *T2 = y->left;
     y->left = x;           // y becomes new root.
@@ -103,7 +142,12 @@ TreapNode* leftRotate(TreapNode *x) {
     return y;              // Return new root.
 }
 
-// Function to insert a node in the Treap.
+/**
+* @brief Function to insert a node in the Treap.
+* @param node Root of the treap.
+* @param key Edge key to be inserted.
+* @return Root of the updated treap.
+*/
 TreapNode* insert(TreapNode* node, Edge key) {
     if (!node) return new TreapNode(key);  // If node is null, create a new node.
 
@@ -119,7 +163,12 @@ TreapNode* insert(TreapNode* node, Edge key) {
     return node;  // Return the potentially new root of the subtree.
 }
 
-// Search and display package information based on package code.
+/**
+* @brief Search and display package information based on package code.
+* @param root Root of the treap.
+* @param packageCode Package code to search for.
+* @param allPackageCodes Set of all package codes.
+*/
 void searchAndDisplay(TreapNode* root, const string& packageCode, const set<string>& allPackageCodes) {
     TreapNode* found = root;
     // Navigate the treap to find the package code.
@@ -140,8 +189,14 @@ void searchAndDisplay(TreapNode* root, const string& packageCode, const set<stri
     }
 }
 
-// Function to construct MST using Kruskal's algorithm.
+/**
+* @brief Function to construct MST using Kruskal's algorithm.
+* @param graph Graph.
+* @param treapRoot Root of the treap.
+* @param allPackageCodes Set of all package codes.
+*/
 void KruskalMST(Graph& graph, TreapNode*& treapRoot, set<string>& allPackageCodes) {
+    
     vector<Edge> result;    // To store the resultant MST.
     int V = graph.V;        // Number of vertices in the graph.
     combSort(graph.edges);  // Sort edges by weight.
@@ -184,7 +239,9 @@ void KruskalMST(Graph& graph, TreapNode*& treapRoot, set<string>& allPackageCode
     cout << "Total weight of MST: " << totalWeight << endl;
 }
 
-// Main function to drive the program.
+/**
+* @brief Main function to drive the program.
+*/
 int main() {
     srand(time(nullptr)); // Seed for random number generation.
 
