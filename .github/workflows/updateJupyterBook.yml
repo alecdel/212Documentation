@@ -1,4 +1,4 @@
-name: deploy-book-and-doxygen
+name: deploy-book
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
     - main
 
 jobs:
-  deploy-book-and-doxygen:
+  deploy-book:
     runs-on: ubuntu-latest
     permissions:
       pages: write
@@ -20,37 +20,20 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -U jupyter-book
-        # Install Doxygen
-        sudo apt-get update && sudo apt-get install -y doxygen
-
     - name: Cache
       uses: actions/cache@v4
       with:
         path: _build/.jupyter_cache
         key: ${{ runner.os }}-jupyter-book-cache-${{ hashFiles('requirements.txt') }}
 
-    - name: Build the Jupyter Book
+    - name: Build the book
       run: |
         jupyter-book build --all warehouse-delivery-network
-
-    - name: Build Doxygen documentation
-      run: |
-        doxygen Doxyfile
-
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
       with:
-        name: book
         path: "warehouse-delivery-network/_build/html"
-    
-    - name: Upload Doxygen documentation
-      uses: actions/upload-artifact@v2
-      with:
-        name: doxygen
-        path: "warehouse-delivery-network/documentation/html"
 
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
-      with:
-        path: "warehouse-delivery-network/_build/html"
